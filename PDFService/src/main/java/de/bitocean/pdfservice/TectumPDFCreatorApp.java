@@ -1,25 +1,18 @@
 package de.bitocean.pdfservice;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry; 
-import java.util.Set;
-import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSName;
-import org.apache.pdfbox.cos.COSObject;
-
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 
 /**
@@ -86,6 +79,7 @@ public class TectumPDFCreatorApp {
     
 
         String NR = "123456789";
+
         String[] data1 = {"Herr", "Mirko", "Nummer", "16. April 1975 in Stollberg (Erzg.)", "Datum", "2015-05-05"  };
 
         String[] data3 = {"Organisation", "Der Verein", "Strasse", "Am Dorfplatz 1208.x bis z", "PLZ", "06259", "Ort", "Frankleben", "Land", "Deutschland" };
