@@ -1,0 +1,117 @@
+#file,s,bytes
+sql/hewiki-20150323-categorylinks.sql,4425,127418603
+sql/hewiki-20150323-category.sql,29,3107025
+sql/dewiki-20150321-categorylinks.sql,41471,1140910014
+sql/dewiki-20150321-category.sql,149,17795759
+sql/dewiki-20150321-externallinks.sql,133277,3413465505
+sql/dewiki-20150321-imagelinks.sql,92,333260193
+sql/dewiki-20150321-image.sql,12,123215088
+sql/dewiki-20150321-interwiki.sql,1,2001
+sql/dewiki-20150321-langlinks.sql,12,470250800
+sql/dewiki-20150321-pagelinks.sql,164,4168542766
+
+
+
+1,2G -rw-rw-r-- 1 mirko.kaempf mirko.kaempf 1,2G 21. Mär 00:26 svwiki-20150321-categorylinks.sql
+ 13M -rw-rw-r-- 1 mirko.kaempf mirko.kaempf  13M 21. Mär 00:38 svwiki-20150321-category.sql
+ ,1G -rw-rw-r-- 1 mirko.kaempf mirko.kaempf 2,1G 21. Mär 00:25 svwiki-20150321-pagelinks.sql
+468M -rw-rw-r-- 1 mirko.kaempf mirko.kaempf 468M 21. Mär 00:38 svwiki-20150321-page.sql
+8
+1,2G -rw-rw-r-- 1 mirko.kaempf mirko.kaempf 1,2G 21. Mär 00:34 svwiki-20150321-externallinks.sql
+217M -rw-rw-r-- 1 mirko.kaempf mirko.kaempf 217M 21. Mär 00:27 svwiki-20150321-imagelinks.sql
+
+4,0K -rw-rw-r-- 1 mirko.kaempf mirko.kaempf 2,8K 21. Mär 00:11 svwiki-20150321-image.sql
+4,0K -rw-rw-r-- 1 mirko.kaempf mirko.kaempf 2,0K 21. Mär 00:37 svwiki-20150321-interwiki.sql
+499M -rw-rw-r-- 1 mirko.kaempf mirko.kaempf 499M 21. Mär 00:37 svwiki-20150321-langlinks.sql
+238M -rw-rw-r-- 1 mirko.kaempf mirko.kaempf 838M 21. Mär 00:32 svwiki-20150321-templatelinks.sql
+
+ sql/svwiki-20150321-categorylinks.sql,11945,1271296605
+ sql/svwiki-20150321-category.sql,77,12813943
+ sql/svwiki-20150321-externallinks.sql,40866,1267680388
+ sql/svwiki-20150321-imagelinks.sql,4017,226651356
+ sql/svwiki-20150321-image.sql,0,2838
+ sql/svwiki-20150321-interwiki.sql,0,2010
+ 
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://training09/svwiki \
+--username training --password training --table category \
+--hive-import --hive-database svwiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/svwiki \
+--map-column-hive cat_title=String \
+--map-column-java cat_title=String 
+ 
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://training09/svwiki \
+--username training --password training --table category \
+--hive-import --hive-database svwiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/svwiki \
+--map-column-hive cat_title=String --warehouse-dir \
+--map-column-java cat_title=String
+
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://training09/svwiki \
+--username training --password training --table page --hive-import \
+--hive-database svwiki --warehouse-dir /user/mirko.kaempf/wikipedia/svwiki \
+--map-column-hive page_title=String,page_restrictions=String,page_touched=String,
+   page_links_updated=String,page_content_model=String \
+--map-column-java page_title=String,page_restrictions=String,page_touched=String,
+   page_links_updated=String,page_content_model=String 
+ 
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/svwiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training \
+--hive-import --hive-database svwiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/svwiki \
+--map-column-hive cl_to=String,cl_sortkey=String,cl_sortkey_prefix=String,cl_collation=String,cl_type=String \
+--map-column-java cl_to=String,cl_sortkey=String,cl_sortkey_prefix=String,cl_collation=String,cl_type=String \
+--table categorylinks \
+--split-by cl_from
+ 
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/svwiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training --hive-import --hive-database svwiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/svwiki --table externallinks \
+--map-column-hive el_to=String,el_index=String \
+--map-column-java el_to=String,el_index=String 
+
+
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/svwiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training --hive-import --hive-database svwiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/svwiki \
+--table image \
+--map-column-hive img_sha1=String,img_timestamp=String,img_user_text=String,img_description=String,img_minor_mime=String,img_major_mime=String,img_media_type=String,img_metadata=String,img_name=String \
+--map-column-java img_sha1=String,img_timestamp=String,img_user_text=String,img_description=String,img_minor_mime=String,img_major_mime=String,img_media_type=String,img_metadata=String,img_name=String \
+--split-by image_user
+
+
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/svwiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training --hive-import --hive-database svwiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/svwiki \
+--table imagelinks \
+--map-column-hive il_to=String \
+--map-column-java il_to=String \
+--split-by il_from
+ 
+ 
+ ===hewiki===
+ >> Done. (sql/hewiki-20150323-categorylinks.sql,6118,127418603)
+ >> Done. (sql/hewiki-20150323-category.sql,20,3107025)
+ >> Done. (sql/hewiki-20150323-externallinks.sql,7686,171747277)
+ >> Done. (sql/hewiki-20150323-imagelinks.sql,3682,49473842)
+ >> Done. (sql/hewiki-20150323-image.sql,105,29787070)
+ >> Done. (sql/hewiki-20150323-interwiki.sql,1,2008)
+ >> Done. (sql/hewiki-20150323-langlinks.sql,21087,160055621)
+ >> Done. (sql/hewiki-20150323-pagelinks.sql,107350,823724168)
+ >> Done. (sql/hewiki-20150323-page.sql,1101,82758118)
+ >> Done. (sql/hewiki-20150323-templatelinks.sql,4918,171422453)
+ 
+ ===svwiki===
+ >> Done. (sql/svwiki-20150321-categorylinks.sql,11945,1271296605)
+ >> Done. (sql/svwiki-20150321-category.sql,77,12813943)
+ >> Done. (sql/svwiki-20150321-externallinks.sql,40866,1267680388)
+ >> Done. (sql/svwiki-20150321-imagelinks.sql,4017,226651356)
+ >> Done. (sql/svwiki-20150321-image.sql,0,2838)
+ >> Done. (sql/svwiki-20150321-interwiki.sql,0,2010)
+ >> Done. (sql/svwiki-20150321-langlinks.sql,28442,522597836)
+ >> Done. (sql/svwiki-20150321-pagelinks.sql,133980,2217867078)
+ >> Done. (sql/svwiki-20150321-page.sql,32844,489972572)
+ >> Done. (sql/svwiki-20150321-templatelinks.sql,24087,877707314)

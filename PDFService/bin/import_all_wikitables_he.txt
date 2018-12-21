@@ -1,0 +1,57 @@
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://training09/hewiki \
+--username training --password training --table category \
+--hive-import --hive-database hewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/hewiki \
+--map-column-hive cat_title=String \
+--map-column-java cat_title=String 
+
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://training09/hewiki \
+--username training --password training --table page --hive-import \
+--hive-database hewiki --warehouse-dir /user/mirko.kaempf/wikipedia/hewiki \
+--map-column-hive page_title=String,page_restrictions=String,page_touched=String,page_links_updated=String,page_content_model=String \
+--map-column-java page_title=String,page_restrictions=String,page_touched=String,page_links_updated=String,page_content_model=String 
+ 
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/hewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training \
+--hive-import --hive-database hewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/hewiki \
+--map-column-hive cl_to=String,cl_sortkey=String,cl_sortkey_prefix=String,cl_collation=String,cl_type=String \
+--map-column-java cl_to=String,cl_sortkey=String,cl_sortkey_prefix=String,cl_collation=String,cl_type=String \
+--table categorylinks \
+--split-by cl_from
+
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/hewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training \
+--hive-import --hive-database hewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/hewiki \
+--map-column-hive pl_title=String \
+--map-column-java pl_title=String \
+--table pagelinks \
+--split-by pl_namespace
+ 
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/hewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training --hive-import --hive-database hewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/hewiki --table externallinks \
+--map-column-hive el_to=String,el_index=String \
+--map-column-java el_to=String,el_index=String 
+
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/hewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training --hive-import --hive-database hewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/hewiki \
+--table image \
+--map-column-hive img_sha1=String,img_timestamp=String,img_user_text=String,img_description=String,img_minor_mime=String,img_major_mime=String,img_media_type=String,img_metadata=String,img_name=String \
+--map-column-java img_sha1=String,img_timestamp=String,img_user_text=String,img_description=String,img_minor_mime=String,img_major_mime=String,img_media_type=String,img_metadata=String,img_name=String \
+--split-by img_user
+
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/hewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training --hive-import --hive-database hewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/hewiki \
+--table imagelinks \
+--map-column-hive il_to=String \
+--map-column-java il_to=String \
+--split-by il_from

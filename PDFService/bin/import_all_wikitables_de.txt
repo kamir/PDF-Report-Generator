@@ -1,0 +1,95 @@
+#
+#  This script is stored in the WRONG place !!!
+#
+
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://training09/dewiki \
+--username training --password training --table category \
+--hive-import --hive-database dewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/dewiki \
+--map-column-hive cat_title=String \
+--map-column-java cat_title=String 
+
+# started
+# done
+
+
+sqoop import --driver com.mysql.jdbc.Driver --connect jdbc:mysql://training09/dewiki \
+--username training --password training --table page --hive-import \
+--hive-database dewiki --warehouse-dir /user/mirko.kaempf/wikipedia/dewiki \
+--map-column-hive page_title=String,page_restrictions=String,page_touched=String,page_links_updated=String,page_content_model=String \
+--map-column-java page_title=String,page_restrictions=String,page_touched=String,page_links_updated=String,page_content_model=String 
+ 
+# started
+---FAILED---
+>>> -m 8 did help !!!
+# done 
+ 
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/dewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training \
+--hive-import --hive-database dewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/dewiki \
+--map-column-hive cl_to=String,cl_sortkey=String,cl_sortkey_prefix=String,cl_collation=String,cl_type=String \
+--map-column-java cl_to=String,cl_sortkey=String,cl_sortkey_prefix=String,cl_collation=String,cl_type=String \
+--table categorylinks \
+--split-by cl_from
+
+# started
+# done
+
+
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/dewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training --hive-import --hive-database dewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/dewiki \
+--table image \
+--map-column-hive img_sha1=String,img_timestamp=String,img_user_text=String,img_description=String,img_minor_mime=String,img_major_mime=String,img_media_type=String,img_metadata=String,img_name=String \
+--map-column-java img_sha1=String,img_timestamp=String,img_user_text=String,img_description=String,img_minor_mime=String,img_major_mime=String,img_media_type=String,img_metadata=String,img_name=String \
+--split-by img_user
+
+# started
+# done
+
+
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/dewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training --hive-import --hive-database dewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/dewiki \
+--table imagelinks \
+--map-column-hive il_to=String \
+--map-column-java il_to=String \
+--split-by il_from
+
+# started
+# done
+
+
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/dewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training \
+--hive-import --hive-database dewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/dewiki \
+--map-column-hive pl_title=String \
+--map-column-java pl_title=String \
+--table pagelinks \
+--split-by pl_namespace -m 80
+
+15/05/18 16:49:16 INFO mapreduce.ImportJobBase: Transferred 3,5225 GB in 2.186,3758 seconds (1,6498 MB/sec)
+
+# command ready
+# started
+# done
+
+
+sqoop import --driver com.mysql.jdbc.Driver \
+--connect "jdbc:mysql://training09/dewiki?dontTrackOpenResources=true&defaultFetchSize=1000&useCursorFetch=true" \
+--username training --password training --hive-import --hive-database dewiki \
+--warehouse-dir /user/mirko.kaempf/wikipedia/dewiki --table externallinks \
+--map-column-hive el_to=String,el_index=String \
+--map-column-java el_to=String,el_index=String -m 10
+
+# command ready
+# started
+# done
+
+
