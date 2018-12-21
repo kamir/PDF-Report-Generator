@@ -1,2 +1,2 @@
-# PDFGenerator
-The PDF generator for the CCHL.eu shop
+# PDF-Report-Generator
+A simple PDF generator for Open-Office based reports. 
